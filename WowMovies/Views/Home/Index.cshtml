@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Movie Catalog";
+}
+
+<div class="clearfix">&nbsp;</div>
+
+<div class="row">
+    <div class="col-lg-5">
+        <input type="text" class="form-control" placeholder="Search for title..." ng-model="searchParams.title">
+    </div>
+    <div class="col-lg-5">
+        <input type="text" class="form-control" placeholder="Search for year..." ng-model="searchParams.year">
+    </div><!-- /.col-lg-6 -->
+    <div class="col-lg-1">
+        <button class="btn btn-default" type="button" ng-click="search()">Go!</button>
+    </div>
+</div><!-- /.row -->
+
+<div class="clearfix">&nbsp;</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th><a href="#" ng-click="sortField = 'Title'">Title</a></th>
+                <th><a href="#" ng-click="sortField = 'Year'">Year</a></th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="movie in searchResult.movies | orderBy:sortField">
+                <td>
+                    <a href="#detailView" ng-click="displayMovie(movie.imdbID)">{{movie.Title}}</a>
+                </td>
+                <td>{{movie.Year}}</td>
+                <td>{{movie.Type}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row" ng-hide="detailViewMovie.Title == null" id="detailView">
+    <div class="col-sm-12 col-md-12">
+        <div class="thumbnail">
+            <img ng-src="{{detailViewMovie.Poster == 'N/A' ? 'http://www.rosscostiganphotography.ie/assets/2013/03/ComingSoonExhibition_Teaser1-620x430.jpg' : detailViewMovie.Poster}}" alt="...">
+            <div class="caption">
+                <h3>{{detailViewMovie.Title}} ({{detailViewMovie.Year}})</h3>
+                <p>Rate: {{detailViewMovie.Rated}}</p>
+                <p>Release: {{detailViewMovie.Released}}</p>
+                <p>Runtime: {{detailViewMovie.Runtime}}</p>
+                <p>Genre: {{detailViewMovie.Genre}}</p>
+                <p>Director: {{detailViewMovie.Director}}</p>
+                <p>Writer: {{detailViewMovie.Writer}}</p>
+                <p>Actors: {{detailViewMovie.Actors}}</p>
+                <p> Plot:
+                    {{detailViewMovie.Plot | extract:shortPlot:true:10:' ...'}}
+                    <a href="javascript:void(0);" ng-click="showFullPlot()" ng-show="shortPlot">More</a>
+                </p>
+                <p>Rating: {{detailViewMovie.imdbRating}}
+                    <star-rating ng-model="detailViewMovie.starRating" readonly="true"></star-rating>
+                </p>
+                <p>
+                    <a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
